@@ -1,0 +1,57 @@
+{
+  "remove_selectors": [
+    "header",
+    "footer",
+    "aside.sidebar .advertisement",
+    "nav",
+    ".tags"
+  ],
+  "selectors": [
+    {
+      "name": "title",
+      "selector": "article.main-article .article-title",
+      "type": "text"
+    },
+    {
+      "name": "author",
+      "selector": "article.main-article .author-name",
+      "type": "text"
+    },
+    {
+      "name": "publication_date",
+      "selector": "article.main-article time",
+      "type": "attribute",
+      "attribute": "datetime"
+    },
+    {
+      "name": "article_summary",
+      "selector": "article.main-article .article-content p:first-of-type",
+      "type": "text"
+    },
+    {
+      "name": "full_article_content",
+      "selector": "article.main-article .article-content",
+      "type": "html"
+    },
+    {
+      "name": "key_takeaways",
+      "selector": "article.main-article .article-content ul li",
+      "type": "text",
+      "multiple": true
+    },
+    {
+      "name": "related_article_titles",
+      "selector": "aside.sidebar ul li a",
+      "type": "text",
+      "multiple": true,
+      "default": []
+    },
+    {
+      "name": "image_url",
+      "selector": "article.main-article .article-image",
+      "type": "attribute",
+      "attribute": "src",
+      "default": null
+    }
+  ]
+}

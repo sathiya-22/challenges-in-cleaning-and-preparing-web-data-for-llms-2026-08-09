@@ -1,0 +1,1 @@
+- 2026-10-11: Added basic error handling for file not found and configuration validation, improving robustness for CLI usage.

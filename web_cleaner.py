@@ -36,8 +36,14 @@ CONFIG_SCHEMA = {
 
 def load_config(config_path: Path) -> dict:
     """Loads and validates the configuration from a JSON file."""
-    with open(config_path, 'r', encoding='utf-8') as f:
-        config = json.load(f)
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Configuration file not found: {config_path}") from e
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON in configuration file: {config_path}. Error: {e}") from e
+
     try:
         validate(instance=config, schema=CONFIG_SCHEMA)
     except ValidationError as e:
@@ -131,18 +137,23 @@ def main():
     if not html_path.exists():
         print(f"Error: HTML file not found at {html_path}")
         exit(1)
-    if not config_path.exists():
-        print(f"Error: Config file not found at {config_path}")
-        exit(1)
 
     try:
         config = load_config(config_path)
-    except ValueError as e:
+    except (FileNotFoundError, ValueError) as e:
         print(f"Error loading configuration: {e}")
         exit(1)
 
-    with open(html_path, 'r', encoding='utf-8') as f:
-        html_content = f.read()
+    try:
+        with open(html_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+    except FileNotFoundError as e:
+        print(f"Error: HTML file not found at {html_path}")
+        exit(1)
+    except Exception as e:
+        print(f"Error reading HTML file {html_path}: {e}")
+        exit(1)
+
 
     extracted_data = extract_data(html_content, config)
     print(json.dumps(extracted_data, indent=2, ensure_ascii=False))
